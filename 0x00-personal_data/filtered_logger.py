@@ -69,5 +69,26 @@ class RedactingFormatter(logging.Formatter):
         return super(RedactingFormatter, self).format(record)
 
 
+def main():
+    """Retrieves data and logs it"""
+    logger = get_logger()
+    db = get_db()
+    cursor = db.cursor()
+
+    cursor.execute("SELECT * FROM users;")
+    if cursor.description:
+        field_names = [i[0] for i in cursor.description]
+
+    for row in cursor:
+        message_items = []
+        for name, value in zip(field_names, row):
+            message_items.append(f"{name}={value}")
+        message = "; ".join(message_items) + ";"
+        logger.info(message)
+
+    cursor.close()
+    db.close()
+
+
 if __name__ == '__main__':
     pass
