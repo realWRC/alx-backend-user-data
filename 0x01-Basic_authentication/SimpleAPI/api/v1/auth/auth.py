@@ -10,11 +10,6 @@ class Auth:
     """
     Defines the Authentication for the API
     """
-    def __init__(self) -> None:
-        """
-        Initialises the Authentication class
-        """
-        pass
 
     def require_auth(self, path: str, excluded_paths: List[str]) -> bool:
         """ Returns some API stuff
@@ -40,7 +35,14 @@ class Auth:
     def authorization_header(self, request=None) -> str:
         """ Returns some API stuff
         """
-        return None
+        if request is None:
+            return None
+        header = request.headers.get('Authentication')
+
+        if header is None:
+            return None
+
+        return header
 
     def current_user(self, request=None) -> TypeVar('User'):
         """ Returns 
