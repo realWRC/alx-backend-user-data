@@ -6,6 +6,7 @@ Authentication handling for the testing API
 from flask import request
 from typing import List, TypeVar
 
+
 class Auth:
     """
     Defines the Authentication for the API
@@ -20,7 +21,7 @@ class Auth:
             return True
         if path in excluded_paths:
             return False
-        
+
         for excluded_path in excluded_paths:
             if excluded_path.startswith(path):
                 return False
@@ -45,6 +46,6 @@ class Auth:
         return header
 
     def current_user(self, request=None) -> TypeVar('User'):
-        """ Returns 
+        """ Returns
         """
         return None
