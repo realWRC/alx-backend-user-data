@@ -31,7 +31,7 @@ def before_request():
     """ Executes before requests
     """
     if auth is None:
-        pass
+        return
     else:
         excluded_list = [
             '/api/v1/status/',
@@ -44,6 +44,7 @@ def before_request():
                 abort(401, description="Unauthorized")
             if auth.current_user(request) is None:
                 abort(403, description="Forbidden")
+
 
 
 @app.errorhandler(404)
