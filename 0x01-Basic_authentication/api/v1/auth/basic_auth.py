@@ -4,7 +4,7 @@
 
 from api.v1.auth.auth import Auth
 from models.user import User
-from typing import Optional
+from typing import Optional, TypeVar
 import base64
 
 
@@ -67,7 +67,7 @@ class BasicAuth(Auth):
 
     def user_object_from_credentials(
         self, user_email: str, user_pwd: str
-    ) -> Optional[User]:
+    ) -> TypeVar('User'):
         """ Returns the User instance based on email and password
         """
         if user_email is None or not isinstance(user_email, str):
@@ -87,7 +87,7 @@ class BasicAuth(Auth):
 
         return user
 
-    def current_user(self, request=None) -> Optional[User]:
+    def current_user(self, request=None) -> TypeVar('User'):
         """ Overloads Auth and retrieves the User instance
         for a request
         """
