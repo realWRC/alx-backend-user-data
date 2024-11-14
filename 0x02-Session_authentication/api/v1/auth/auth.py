@@ -5,6 +5,7 @@ Authentication handling for the testing API
 
 from flask import request
 from typing import List, TypeVar
+import os
 
 
 class Auth:
@@ -45,3 +46,14 @@ class Auth:
         """ Returns
         """
         return None
+
+    def session_cookie(self, request=None):
+        """ Returns a session cookie
+        """
+        if request is None:
+            return None
+        SESSION_NAME = os.getenv('SESSION_NAME')
+        if SESSION_NAME is None:
+            return None
+
+        return request.cookies.get(SESSION_NAME)
