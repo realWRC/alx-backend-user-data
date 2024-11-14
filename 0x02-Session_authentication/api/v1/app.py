@@ -38,6 +38,7 @@ def before_request():
             '/api/v1/unauthorized/',
             '/api/v1/forbidden/'
         ]
+        setattr(request, "current_user", auth.current_user(request))
 
         if auth.require_auth(request.path, excluded_list):
             if auth.authorization_header(request) is None:
