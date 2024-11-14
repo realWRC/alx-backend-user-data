@@ -34,12 +34,12 @@ def before_request():
     """ Executes before requests
     """
     if auth is None:
-        return
+        pass
     else:
         excluded_list = [
             '/api/v1/status/',
             '/api/v1/unauthorized/',
-            '/api/v1/forbidden/'
+            '/api/v1/forbidden/',
             '/api/v1/auth_session/login/'
         ]
         setattr(request, "current_user", auth.current_user(request))
