@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """DB module
 """
+
 from sqlalchemy import create_engine
 from sqlalchemy.exc import NoResultFound, InvalidRequestError
 from sqlalchemy.ext.declarative import declarative_base
@@ -50,5 +51,5 @@ class DB:
 
         result = self._session.query(User).filter_by(**kwargs).first()
         if result is None:
-            raise NoResultFound 
+            raise NoResultFound
         return result
