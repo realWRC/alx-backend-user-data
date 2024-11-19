@@ -2,6 +2,7 @@
 """DB module
 """
 from sqlalchemy import create_engine
+from sqlalchemy.exc import NoResultFound, InvalidRequestError
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.session import Session
@@ -31,10 +32,23 @@ class DB:
             self.__session = DBSession()
         return self.__session
 
-    def add_user(self, email: str, hashed_password: str) -> User:
+    def add_user(self, email: str, hashed_password: str) -> Union[User, None]:
         """ Creates a user based on email and password
         """
-        newUser = User(email=email, hashed_password=hashed_password)
-        self._session.add(newUser)
+        user = User()
+        user.email = email
+        user.hashed_password = hashed_password
+        self._session.add(user)
         self._session.commit()
-        return newUser
+        return user
+
+    def find_user_by(self, **kwargs) -> User:
+        """ Finds a user given a random identifier
+        """
+        if not kwargs:
+            raise InvalidRequestError
+
+        result = self._session.query(User).filter_by(**kwargs).first()
+        if result is None:
+            raise NoResultFound 
+        return result
