@@ -52,5 +52,19 @@ def login() -> Union[Tuple[Response, Literal[int]], Response, None]:
         return abort(401)
 
 
+@app.route('/sessions', methods=['DELETE'])
+def logout() -> Union[Tuple[Response, Literal[int]], Response, None]:
+    """ User logout end-point
+    """
+    try:
+        user = AUTH.get_user_from_session_id(request.args.get('session_id'))
+        if user:
+            AUTH.destroy_session(user.id)
+    except Exception:
+        pass
+    else:
+        return abort(403)
+
+
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=5000)
