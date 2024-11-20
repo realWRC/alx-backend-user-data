@@ -6,6 +6,7 @@ from flask import Flask, jsonify, Response, redirect, request, abort
 from auth import Auth
 from typing import Tuple, Union
 from typing_extensions import Literal
+from sqlalchemy.orm.exc import NoResultFound
 
 app = Flask(__name__)
 AUTH = Auth()
@@ -107,9 +108,12 @@ def update_password() -> \
     if not email or not reset_token or not new_password:
         return abort(403)
     try:
+        user = AUTH._db.find_user_by(reset_token=reset_token)
+        if user.email != email:
+            abort(403)
         AUTH.update_password(reset_token, new_password)
         return jsonify({"email": email, "message": "Password updated"}), 200
-    except Exception:
+    except (ValueError, NoResultFound):
         abort(403)
 
 
