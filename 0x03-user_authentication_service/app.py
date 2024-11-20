@@ -82,7 +82,8 @@ def profile() -> Union[Tuple[Response, Literal[int]], Response, None]:
 
 
 @app.route('/reset_password', methods=['POST'])
-def get_reset_password_token() -> Union[Tuple[Response, Literal[int]], Response, None]:
+def get_reset_password_token() -> \
+        Union[Tuple[Response, Literal[int]], Response, None]:
     """ Generates and gives a reset token
     """
     email = request.form.get('email')
