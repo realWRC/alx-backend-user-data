@@ -2,8 +2,7 @@
 """ A simple flask app.
 """
 
-from flask import Flask, jsonify, Response, request
-from sqlalchemy import Integer
+from flask import Flask, jsonify, Response, request, abort
 from auth import Auth
 from typing import Tuple, Union
 from typing_extensions import Literal
@@ -19,7 +18,6 @@ def index() -> Response:
     return jsonify({"message": "Bienvenue"})
 
 
-# def register() -> Union[Tuple[Response, Literal[int]], Response]:
 @app.route('/users', methods=['POST'])
 def register() -> Union[Tuple[Response, Literal[int]], Response]:
     """ Registers a user
@@ -32,6 +30,26 @@ def register() -> Union[Tuple[Response, Literal[int]], Response]:
         return jsonify({"email": user.email, "message": "user created"})
     except Exception:
         return jsonify({"message": "email already registered"}), 400
+
+
+@app.route('/sessions', methods=['POST'])
+def login() -> Union[Tuple[Response, Literal[int]], Response, None]:
+    """ User login end-point
+    """
+    try:
+        email = request.form.get('email')
+        password = request.form.get('password')
+        if AUTH.valid_login(
+                email=email,
+                password=password
+                ):
+            response = jsonify({"email": email, "message": "logged in"})
+            response.set_cookie("session_id", AUTH.create_session(email=email))
+            return response
+    except Exception:
+        pass
+    else:
+        return abort(401)
 
 
 if __name__ == '__main__':
