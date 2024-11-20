@@ -51,4 +51,3 @@ class Auth:
                 return False
         except Exception:
             return False
-
