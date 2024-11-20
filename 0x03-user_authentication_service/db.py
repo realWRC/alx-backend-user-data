@@ -34,7 +34,7 @@ class DB:
             self.__session = DBSession()
         return self.__session
 
-    def add_user(self, email: str, hashed_password: str) -> Union[User, None]:
+    def add_user(self, email: str, hashed_password: str) -> User:
         """ Creates a user based on email and password
         """
         user = User()
