@@ -8,7 +8,6 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.orm.session import Session
-from typing import Union
 
 from user import Base, User
 
@@ -62,7 +61,7 @@ class DB:
 
         for key, value in kwargs.items():
             if not hasattr(user, key):
-                return ValueError
+                raise ValueError
             setattr(user, key, value)
 
         self._session.commit()
