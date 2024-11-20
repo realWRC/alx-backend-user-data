@@ -85,14 +85,13 @@ def profile() -> Union[Tuple[Response, Literal[int]], Response, None]:
 def get_reset_password_token() -> Union[Tuple[Response, Literal[int]], Response, None]:
     """ Generates and gives a reset token
     """
+    email = request.form.get('email')
+    if not email:
+        return abort(403)
     try:
-        email = request.form.get('email')
-        if not email:
-            return abort(403)
-
         token = AUTH.get_reset_password_token(email)
         return jsonify({"email": email, "reset_token": token}), 200
-    except Exception:
+    except ValueError:
         abort(403)
 
 
