@@ -90,3 +90,15 @@ class Auth:
                 delattr(user, 'session_id')
         except Exception:
             pass
+
+    def get_reset_password_token(self, email: str) -> Union[str, None]:
+        """ Creates a reset password token
+        """
+        try:
+            user = self._db.find_user_by(email=email)
+            if not user:
+                raise ValueError
+            user.reset_token = _generate_uuid()
+            return user.reset_token
+        except NoResultFound:
+            return None
