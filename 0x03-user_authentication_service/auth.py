@@ -90,4 +90,3 @@ class Auth:
                 delattr(user, 'session_id')
         except Exception:
             pass
-
