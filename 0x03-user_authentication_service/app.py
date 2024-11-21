@@ -108,9 +108,9 @@ def update_password() -> \
     if not email or not reset_token or not new_password:
         return abort(403)
     try:
-        user = AUTH._db.find_user_by(reset_token=reset_token)
-        if user is None or user.email != email:
-            abort(403)
+        # user = AUTH._db.find_user_by(reset_token=reset_token)
+        # if user is None or user.email != email:
+        #     abort(403)
         AUTH.update_password(reset_token, new_password)
         return jsonify({"email": email, "message": "Password updated"}), 200
     except (ValueError, NoResultFound):
